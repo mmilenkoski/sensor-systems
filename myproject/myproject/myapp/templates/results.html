@@ -1,0 +1,417 @@
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+        <meta charset="utf-8">
+        <title>Minimal Django File Upload Example</title>
+    </head>
+
+    <body>
+        <div class="out">
+            <h1 align="center">Mean Square Error</h1>
+            <h2 align="center">Original Frequency</h2>
+            <canvas id="myChart" ></canvas>
+            <h2 align="center">1/2 Frequency</h2>
+            <canvas id="myChart01" ></canvas>
+            <h1 align="center">Root Mean Square Error</h1>
+            <h2 align="center">Original Frequency</h2>
+            <canvas id="myChart1" ></canvas>
+            <h2 align="center">1/2 Frequency</h2>
+            <canvas id="myChart11" ></canvas>
+            <h1 align="center">Fraction of records send</h1>
+            <h2 align="center">Original Frequency</h2>
+            <canvas id="myChart2" ></canvas>
+            <h2 align="center">1/2 Frequency</h2>
+            <canvas id="myChart21" ></canvas>
+            <a href="../parameters" class="btn">Back</a>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
+            <script>
+                var ctx = document.getElementById("myChart");
+                var ctx01 = document.getElementById("myChart01");
+                var ctx1 = document.getElementById("myChart1");
+                var ctx11 = document.getElementById("myChart11");
+                var ctx2 = document.getElementById("myChart2");
+                var ctx21 = document.getElementById("myChart21");
+                var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: {{ labels|safe }},
+                            datasets: [{
+                                label: 'MA(1)',
+                                fill: false,
+                                borderColor: "rgba(75,192,192,1)",
+                                backgroundColor: "rgba(75,192,192,1)",
+                                data: {{ mseList.0|safe }}
+                            },
+                            {
+                                label: 'MA(2)',
+                                fill: false,
+                                borderColor: "rgba(220,192,110,1)",
+                                backgroundColor: "rgba(220,192,110,1)",
+                                data: {{ mseList.1|safe }}
+                            },
+                                {
+                                label: 'MA(3)',
+                                fill: false,
+                                borderColor: "rgba(10,70,110,1)",
+                                backgroundColor: "rgba(10,70,110,1)",
+                                data: {{ mseList.2|safe }}
+                            },
+                                {
+                                label: 'LMS',
+                                fill: false,
+                                borderColor: "rgba(0,100,0,1)",
+                                backgroundColor: "rgba(0,100,0,1)",
+                                data: {{ mseList.4|safe }}
+                            }
+                            ,
+                                {
+                                label: 'LMS-VSS',
+                                fill: false,
+                                borderColor: "rgba(178,34,34,1)",
+                                backgroundColor: "rgba(178,34,34,1)",
+                                data: {{ mseList.3|safe }}
+                            }
+
+                            ]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'MSE'
+                                    }
+
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Thresholds'
+                                    }
+
+                                }]
+                            }
+                        }
+                    }
+                );
+                var myChart01 = new Chart(ctx01, {
+                        type: 'line',
+                        data: {
+                            labels: {{ labels2|safe }},
+                            datasets: [{
+                                label: 'MA(1)',
+                                fill: false,
+                                borderColor: "rgba(75,192,192,1)",
+                                backgroundColor: "rgba(75,192,192,1)",
+                                data: {{ mseList2.0|safe }}
+                            },
+                            {
+                                label: 'MA(2)',
+                                fill: false,
+                                borderColor: "rgba(220,192,110,1)",
+                                backgroundColor: "rgba(220,192,110,1)",
+                                data: {{ mseList2.1|safe }}
+                            },
+                                {
+                                label: 'MA(3)',
+                                fill: false,
+                                borderColor: "rgba(10,70,110,1)",
+                                backgroundColor: "rgba(10,70,110,1)",
+                                data: {{ mseList2.2|safe }}
+                            },
+                                {
+                                label: 'LMS',
+                                fill: false,
+                                borderColor: "rgba(0,100,0,1)",
+                                backgroundColor: "rgba(0,100,0,1)",
+                                data: {{ mseList2.4|safe }}
+                            }
+                            ,
+                                {
+                                label: 'LMS-VSS',
+                                fill: false,
+                                borderColor: "rgba(178,34,34,1)",
+                                backgroundColor: "rgba(178,34,34,1)",
+                                data: {{ mseList2.3|safe }}
+                            }
+                            ]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'MSE'
+                                    }
+
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Thresholds'
+                                    }
+
+                                }]
+                            }
+                        }
+                    }
+                );
+                var myChart1 = new Chart(ctx1, {
+                        type: 'line',
+                        data: {
+                            labels: {{ labels|safe }},
+                            datasets: [{
+                                label: 'MA(1)',
+                                fill: false,
+                                borderColor: "rgba(75,192,192,1)",
+                                backgroundColor: "rgba(75,192,192,1)",
+                                data: {{ rmseList.0|safe }}
+                            },
+                            {
+                                label: 'MA(2)',
+                                fill: false,
+                                borderColor: "rgba(220,192,110,1)",
+                                backgroundColor: "rgba(220,192,110,1)",
+                                data: {{ rmseList.1|safe }}
+                            },
+                                {
+                                label: 'MA(3)',
+                                fill: false,
+                                borderColor: "rgba(10,70,110,1)",
+                                backgroundColor: "rgba(10,70,110,1)",
+                                data: {{ rmseList.2|safe }}
+                            },
+                                {
+                                label: 'LMS',
+                                fill: false,
+                                borderColor: "rgba(0,100,0,1)",
+                                backgroundColor: "rgba(0,100,0,1)",
+                                data: {{ rmseList.4|safe }}
+                            }
+                            ,
+                                {
+                                label: 'LMS-VSS',
+                                fill: false,
+                                borderColor: "rgba(178,34,34,1)",
+                                backgroundColor: "rgba(178,34,34,1)",
+                                data: {{ rmseList.3|safe }}
+                            }
+                            ]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'RMSE'
+                                    }
+
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Thresholds'
+                                    }
+
+                                }]
+                            }
+                        }
+                    }
+                );
+                var myChart11 = new Chart(ctx11, {
+                        type: 'line',
+                        data: {
+                            labels: {{ labels2|safe }},
+                            datasets: [{
+                                label: 'MA(1)',
+                                fill: false,
+                                borderColor: "rgba(75,192,192,1)",
+                                backgroundColor: "rgba(75,192,192,1)",
+                                data: {{ rmseList2.0|safe }}
+                            },
+                            {
+                                label: 'MA(2)',
+                                fill: false,
+                                borderColor: "rgba(220,192,110,1)",
+                                backgroundColor: "rgba(220,192,110,1)",
+                                data: {{ rmseList2.1|safe }}
+                            },
+                                {
+                                label: 'MA(3)',
+                                fill: false,
+                                borderColor: "rgba(10,70,110,1)",
+                                backgroundColor: "rgba(10,70,110,1)",
+                                data: {{ rmseList2.2|safe }}
+                            },
+                                {
+                                label: 'LMS',
+                                fill: false,
+                                borderColor: "rgba(0,100,0,1)",
+                                backgroundColor: "rgba(0,100,0,1)",
+                                data: {{ rmseList2.4|safe }}
+                            },
+                                {
+                                label: 'LMS-VSS',
+                                fill: false,
+                                borderColor: "rgba(178,34,34,1)",
+                                backgroundColor: "rgba(178,34,34,1)",
+                                data: {{ rmseList2.3|safe }}
+                            }
+                            ]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'RMSE'
+                                    }
+
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Thresholds'
+                                    }
+
+                                }]
+                            }
+                        }
+                    }
+                );
+                var myChart2 = new Chart(ctx2, {
+                        type: 'line',
+                        data: {
+                            labels: {{ labels|safe }},
+                            datasets: [{
+                                label: 'MA(1)',
+                                fill: false,
+                                borderColor: "rgba(75,192,192,1)",
+                                backgroundColor: "rgba(75,192,192,1)",
+                                data: {{ percents.0|safe }}
+                            },
+                            {
+                                label: 'MA(2)',
+                                fill: false,
+                                borderColor: "rgba(220,192,110,1)",
+                                backgroundColor: "rgba(220,192,110,1)",
+                                data: {{ percents.1|safe }}
+                            },
+                                {
+                                label: 'MA(3)',
+                                fill: false,
+                                borderColor: "rgba(10,70,110,1)",
+                                backgroundColor: "rgba(10,70,110,1)",
+                                data: {{ percents.2|safe }}
+                            },
+                                {
+                                label: 'LMS',
+                                fill: false,
+                                borderColor: "rgba(0,100,0,1)",
+                                backgroundColor: "rgba(0,100,0,1)",
+                                data: {{ percents.4|safe }}
+                            },
+                                {
+                                label: 'LMS-VSS',
+                                fill: false,
+                                borderColor: "rgba(178,34,34,1)",
+                                backgroundColor: "rgba(178,34,34,1)",
+                                data: {{ percents.3|safe }}
+                            }
+                            ]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Fraction Send'
+                                    }
+
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Thresholds'
+                                    }
+
+                                }]
+                            }
+                        }
+                    }
+                );
+                var myChart21 = new Chart(ctx21, {
+                        type: 'line',
+                        data: {
+                            labels: {{ labels2|safe }},
+                            datasets: [{
+                                label: 'MA(1)',
+                                fill: false,
+                                borderColor: "rgba(75,192,192,1)",
+                                backgroundColor: "rgba(75,192,192,1)",
+                                data: {{ percents2.0|safe }}
+                            },
+                            {
+                                label: 'MA(2)',
+                                fill: false,
+                                borderColor: "rgba(220,192,110,1)",
+                                backgroundColor: "rgba(220,192,110,1)",
+                                data: {{ percents2.1|safe }}
+                            },
+                                {
+                                label: 'MA(3)',
+                                fill: false,
+                                borderColor: "rgba(10,70,110,1)",
+                                backgroundColor: "rgba(10,70,110,1)",
+                                data: {{ percents2.2|safe }}
+                            },
+                                {
+                                label: 'LMS',
+                                fill: false,
+                                borderColor: "rgba(0,100,0,1)",
+                                backgroundColor: "rgba(0,100,0,1)",
+                                data: {{ percents2.4|safe }}
+                            }
+                            ,
+                                {
+                                label: 'LMS-VSS',
+                                fill: false,
+                                borderColor: "rgba(178,34,34,1)",
+                                backgroundColor: "rgba(178,34,34,1)",
+                                data: {{ percents2.3|safe }}
+                            }
+                            ]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Fraction Send'
+                                    }
+
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Thresholds'
+                                    }
+
+                                }]
+                            }
+                        }
+                    }
+                );
+
+            </script>
+
+
+        </div>
+    </body>
+
+</html>

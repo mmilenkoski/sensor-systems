@@ -1,0 +1,32 @@
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+        <meta charset="utf-8">
+        <title>Minimal Django File Upload Example</title>
+    </head>
+
+    <body>
+        <div class="out">
+            <div class="in">
+            <!-- Upload form. Note enctype attribute! -->
+                <form action="{% url "parameters" %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div>
+                            <p>{{ field.errors }}</p>
+                            <p>{{ field.label_tag }}</p>
+                            <p>{{ field }}</p>
+                        </div>
+                    {% endfor %}
+                    <p class = "in"><input type="submit" name="sbmButton" value="Submit" class="btn btn-primary"/></p>
+                </form>
+                <a href="../fileupload" class="btn">Back</a>
+            </div>
+        </div>
+    </body>
+</html>

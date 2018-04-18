@@ -1,0 +1,208 @@
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+        <meta charset="utf-8">
+        <title>Minimal Django File Upload Example</title>
+    </head>
+
+    <body>
+        <div class="out">
+            <div class="in">
+            <!-- Upload form. Note enctype attribute! -->
+                <form action="{% url "list" %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <p>{{ form.non_field_errors }}</p>
+
+                    <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
+
+                    <p>
+                        {{ form.docfile.errors }}
+                        {{ form.docfile}}
+
+                    </p>
+
+                    <p>{{ form.lower.label_tag }} {{ form.lower.help_text }}</p>
+
+                    <p>
+                        {{ form.lower.errors }}
+                        {{ form.lower}}
+
+                    </p>
+
+                    <p>{{ form.upper.label_tag }} {{ form.upper.help_text }}</p>
+
+                    <p>
+                        {{ form.upper.errors }}
+                        {{ form.upper}}
+
+                    </p>
+
+
+                    <p>{{ form.step.label_tag }} {{ form.step.help_text }}</p>
+
+                    <p>
+                        {{ form.step.errors }}
+                        {{ form.step}}
+
+                    </p>
+
+                    <p class = "in"><input type="submit" name="sbmButton" value="Submit" class="btn btn-primary"/></p>
+                </form>
+
+            </div>
+            {% if f == True %}
+            <p>Example</p>
+            {% endif %}
+            <canvas id="myChart" ></canvas>
+            <canvas id="myChart01" ></canvas>
+            <canvas id="myChart1" ></canvas>
+            <canvas id="myChart11" ></canvas>
+            <canvas id="myChart2" ></canvas>
+            <canvas id="myChart21" ></canvas>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
+            <script>
+                var ctx = document.getElementById("myChart");
+                var ctx01 = document.getElementById("myChart01");
+                var ctx1 = document.getElementById("myChart1");
+                var ctx11 = document.getElementById("myChart11");
+                var ctx2 = document.getElementById("myChart2");
+                var ctx21 = document.getElementById("myChart21");
+                var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: {{ labels|safe }},
+                            datasets: [{
+                                label: 'MSE(1)',
+                                fill: false,
+                                borderColor: "rgba(75,192,192,1)",
+                                backgroundColor: "rgba(75,192,192,1)",
+                                data: {{ mseList.0|safe }}
+                            },
+                            {
+                                label: 'MSE(2)',
+                                fill: false,
+                                borderColor: "rgba(220,192,110,1)",
+                                backgroundColor: "rgba(220,192,110,1)",
+                                data: {{ mseList.1|safe }}
+                            },
+                                {
+                                label: 'MSE(3)',
+                                fill: false,
+                                borderColor: "rgba(10,70,110,1)",
+                                backgroundColor: "rgba(10,70,110,1)",
+                                data: {{ mseList.2|safe }}
+                            }
+                            ,
+                                {
+                                label: 'MSE(LMSVSS)',
+                                fill: false,
+                                borderColor: "rgba(10,70,110,1)",
+                                backgroundColor: "rgba(10,70,110,1)",
+                                data: {{ mseList.3|safe }}
+                            }
+                            ]
+                        }
+                    }
+                );
+                var myChart01 = new Chart(ctx01, {
+                        type: 'line',
+                        data: {
+                            labels: {{ labels2|safe }},
+                            datasets: [{
+                                label: 'MSE(1)',
+                                fill: false,
+                                borderColor: "rgba(75,192,192,1)",
+                                backgroundColor: "rgba(75,192,192,1)",
+                                data: {{ mseList2.0|safe }}
+                            },
+                            {
+                                label: 'MSE(2)',
+                                fill: false,
+                                borderColor: "rgba(220,192,110,1)",
+                                backgroundColor: "rgba(220,192,110,1)",
+                                data: {{ mseList2.1|safe }}
+                            },
+                                {
+                                label: 'MSE(3)',
+                                fill: false,
+                                borderColor: "rgba(10,70,110,1)",
+                                backgroundColor: "rgba(10,70,110,1)",
+                                data: {{ mseList2.2|safe }}
+                            }
+                            ]
+                        }
+                    }
+                );
+                var myChart1 = new Chart(ctx1, {
+                        type: 'line',
+                        data: {
+                            labels: {{ labels|safe }},
+                            datasets: [{
+                                label: 'RMSE(1)',
+                                fill: false,
+                                borderColor: "rgba(75,192,192,1)",
+                                backgroundColor: "rgba(75,192,192,1)",
+                                data: {{ rmseList.0|safe }}
+                            },
+                            {
+                                label: 'RMSE(2)',
+                                fill: false,
+                                borderColor: "rgba(220,192,110,1)",
+                                backgroundColor: "rgba(220,192,110,1)",
+                                data: {{ rmseList.1|safe }}
+                            },
+                                {
+                                label: 'RMSE(3)',
+                                fill: false,
+                                borderColor: "rgba(10,70,110,1)",
+                                backgroundColor: "rgba(10,70,110,1)",
+                                data: {{ rmseList.2|safe }}
+                            }
+                            ]
+                        }
+                    }
+                );
+
+                var myChart2 = new Chart(ctx2, {
+                        type: 'line',
+                        data: {
+                            labels: {{ labels|safe }},
+                            datasets: [{
+                                label: 'MA(1)',
+                                fill: false,
+                                borderColor: "rgba(75,192,192,1)",
+                                backgroundColor: "rgba(75,192,192,1)",
+                                data: {{ percents.0|safe }}
+                            },
+                            {
+                                label: 'MA(2)',
+                                fill: false,
+                                borderColor: "rgba(220,192,110,1)",
+                                backgroundColor: "rgba(220,192,110,1)",
+                                data: {{ percents.1|safe }}
+                            },
+                                {
+                                label: 'MA(3)',
+                                fill: false,
+                                borderColor: "rgba(10,70,110,1)",
+                                backgroundColor: "rgba(10,70,110,1)",
+                                data: {{ percents.2|safe }}
+                            }
+                            ]
+                        }
+                    }
+                )
+
+            </script>
+
+
+        </div>
+    </body>
+
+</html>
