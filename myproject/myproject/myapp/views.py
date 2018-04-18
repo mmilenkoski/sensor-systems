@@ -200,7 +200,7 @@ def getRange(l, u, s):
     return myrange
 
 
-
+#comment
 def previous(niza, threshold):
     counter = 0
     suma = 0
